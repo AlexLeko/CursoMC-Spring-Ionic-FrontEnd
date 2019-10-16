@@ -23,7 +23,7 @@ export class HomePage {
     this.menu.swipeEnable(true);
   }
 
-
+  // ao clicar, faz a navegação para a tela de categorias
   login() {
     this.navCtrl.setRoot('CategoriasPage');
   }
