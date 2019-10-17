@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, IonicPage } from 'ionic-angular';
 import { MenuController } from 'ionic-angular/components/app/menu-controller';
 import { CredentialsDTO } from '../../models/credentials.dto';
+import { AuthService } from '../../services/auth.service';
 
 @IonicPage()
 @Component({
@@ -16,7 +17,10 @@ export class HomePage {
   }
 
 
-  constructor(public navCtrl: NavController, public menu: MenuController) {
+  constructor(
+    public navCtrl: NavController, 
+    public menu: MenuController, 
+    public auth: AuthService) {
   }
 
   // Desabilita o menu ao entrar tela de login
@@ -31,8 +35,16 @@ export class HomePage {
 
   // ao clicar, faz a navegação para a tela de categorias
   login() {
-    console.log(this.creds);
-    this.navCtrl.setRoot('CategoriasPage');
+    this.auth.authenticate(this.creds)
+      .subscribe(response => {
+        // testa se o Header veio na resposta
+        console.log(response.headers.get('Authorization'));
+        this.navCtrl.setRoot('CategoriasPage');
+      },
+      error => {
+        
+      });
+      
   }
 
 
